@@ -6,19 +6,17 @@ using namespace std;
 atomic<double> dFrequencyOutput = 0.0;
 
 double makeNoise(double dTime) {
-	double dOutput = sin(dFrequencyOutput * 2 * 3.14159 * dTime);
-	dOutput += sin((dFrequencyOutput + 20.0) * 2 * 3.14159 * dTime);
-	dOutput *= 1.0;
-
-	return dOutput * 0.4;
-
-	/*
+	double dOutput = 1.0 * sin(dFrequencyOutput * 2.0 * 3.14159 * dTime);
+	
+	//return dOutput * 0.4;
+	
+	
 	if(dOutput > 0.0) {
 		return 0.2;
 	} else {
 		return -0.2;
 	}
-	*/
+	
 }
 
 int main() {
