@@ -4,18 +4,30 @@ using namespace std;
 #include "olcNoiseMaker.h";
 
 atomic<double> dFrequencyOutput = 0.0;
+double dOctaveBaseFrequency = 110.0;	// A2
+double d12thRoofOf2 = pow(2.0, 1.0 / 12.0);
+
+double w(double dHertz) {
+	return dHertz * 2.0 * PI;
+}
+
+double osc(double dHertz, double dTime, int nType) {
+	switch (nType) {
+		case 0: // Sine wave
+			return sin(w(dHertz) * dTime);
+		case 1: // Square wave
+			return sin(w(dHertz) * dTime) > 0.0 ? 1.0 : -1.0;
+		case 3: // Triangle wave
+			return asin(sin(w(dHertz) * dTime) * 2.0 / PI);
+		default:
+			return 0.0;
+	}
+}
 
 double makeNoise(double dTime) {
-	double dOutput = 1.0 * sin(dFrequencyOutput * 2.0 * 3.14159 * dTime);
+	double dOutput = osc(dFrequencyOutput, dTime, 0);
 	
-	//return dOutput * 0.4;
-	
-	
-	if(dOutput > 0.0) {
-		return 0.2;
-	} else {
-		return -0.2;
-	}
+	return dOutput * 0.4;
 	
 }
 
@@ -35,8 +47,6 @@ int main() {
 	// Link noise function with sound machine
 	sound.SetUserFunction(makeNoise);
 
-	double dOctaveBaseFrequency = 110.0;	// A2
-	double d12thRoofOf2 = pow(2.0, 1.0 / 12.0); 
 
 	while(1) {
 		// Add a keyboard like a piano
