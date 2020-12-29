@@ -3,26 +3,27 @@ using namespace std;
 
 #include "olcNoiseMaker.h";
 
-atomic<double> dFrequencyOutput = 0.0;
-double dOctaveBaseFrequency = 110.0;	// A2
-double d12thRoofOf2 = pow(2.0, 1.0 / 12.0);
-
 double w(double dHertz) {
 	return dHertz * 2.0 * PI;
 }
 
+
 double osc(double dHertz, double dTime, int nType) {
 	switch (nType) {
-		case 0: // Sine wave
-			return sin(w(dHertz) * dTime);
-		case 1: // Square wave
-			return sin(w(dHertz) * dTime) > 0.0 ? 1.0 : -1.0;
-		case 3: // Triangle wave
-			return asin(sin(w(dHertz) * dTime) * 2.0 / PI);
-		default:
-			return 0.0;
+	case 0: // Sine wave
+		return sin(w(dHertz) * dTime);
+	case 1: // Square wave
+		return sin(w(dHertz) * dTime) > 0.0 ? 1.0 : -1.0;
+	case 2: // Triangle wave
+		return asin(sin(w(dHertz) * dTime)) * (2.0 / PI);
+	default:
+		return 0.0;
 	}
 }
+
+atomic<double> dFrequencyOutput = 0.0;
+double dOctaveBaseFrequency = 110.0;	// A2
+double d12thRoofOf2 = pow(2.0, 1.0 / 12.0);
 
 double makeNoise(double dTime) {
 	double dOutput = osc(dFrequencyOutput, dTime, 0);
@@ -39,6 +40,15 @@ int main() {
 
 	// Display findings
 	for (auto d : devices) wcout << "Found Output Device: " << d << endl;
+
+	// Display a keyboard
+	wcout << endl <<
+		"|   |   |   |   |   | |   |   |   |   | |   | |   |   |   |" << endl <<
+		"|   | S |   |   | F | | G |   |   | J | | K | | L |   |   |" << endl <<
+		"|   |___|   |   |___| |___|   |   |___| |___| |___|   |   |__" << endl <<
+		"|     |     |     |     |     |     |     |     |     |     |" << endl <<
+		"|  Z  |  X  |  C  |  V  |  B  |  N  |  M  |  ,  |  .  |  /  |" << endl <<
+		"|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|" << endl << endl;
 
 	// Create sound machine
 	// device, sample rate, channels, and two magic myster numbers
