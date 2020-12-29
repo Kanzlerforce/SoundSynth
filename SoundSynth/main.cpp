@@ -26,7 +26,7 @@ double dOctaveBaseFrequency = 110.0;	// A2
 double d12thRoofOf2 = pow(2.0, 1.0 / 12.0);
 
 double makeNoise(double dTime) {
-	double dOutput = osc(dFrequencyOutput, dTime, 0);
+	double dOutput = osc(dFrequencyOutput, dTime, 2);
 	
 	return dOutput * 0.4;
 	
@@ -64,7 +64,7 @@ int main() {
 		// \xbe is period
 		bool bKeyPressed = false;
 		for (int k = 0; k < 15; k++) {
-			if(GetAsyncKeyState((unsigned char)("ZSXCFVGBNJMK\xbcL\xbe"[k])) & 0x8000) {
+			if(GetAsyncKeyState((unsigned char)("ZSXCFVGBNJMK\xbcL\xbe\xbf"[k])) & 0x8000) {
 				dFrequencyOutput = dOctaveBaseFrequency * pow(d12thRoofOf2, k);
 				bKeyPressed = true;
 			} 
